@@ -2,7 +2,7 @@
 const useCache = true
 const swCacheVersion = 43
 const swCachePrefix = 'BP-demo-SW-'
-const urlMatch = '/sw-test/' 
+const urlMatch = '/sw-test/'
 
 // calculated params
 const swCacheName = `${swCachePrefix}${swCacheVersion}`
