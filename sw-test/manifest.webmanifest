@@ -1,0 +1,13 @@
+{
+  "name": "SW-Test",
+  "short_name": "SW Test",
+  "description": "A project to test ServiceWorkers implementation.",
+  "start_url": "/sw-test/index.html",
+  "display": "standalone",
+  "scope": "/sw-test/",
+  "icons": [{
+    "src": "/sw-test/person-icon.png",
+    "sizes": "256x256",
+    "type": "image/png"
+  }]
+}
