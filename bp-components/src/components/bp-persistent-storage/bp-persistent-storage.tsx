@@ -12,21 +12,29 @@ export class BpPersistentStorage {
 
   @Method()
   async setKey(key: string, value: object): Promise<object> {
-    const timestamp = +new Date()
+    // set a time object related to the save process - when the data was received, when was it saved
+    const time = {
+      received: +new Date(),
+      saved: undefined
+    }
 
     return new Promise<object>((resolve, reject) => {
       this.getObjectStore(this.dbstorename, 'readwrite')
         .then(objectStore => {
+
+          time.saved = +new Date()
+
           const request = objectStore.put({
             key,
             value,
-            timestamp
+            time
           })
 
           request.onerror = error => {throw error}
           request.onsuccess = () => resolve({
             key,
-            value
+            value,
+            time
           })
         })
         .catch(error => {
@@ -49,6 +57,7 @@ export class BpPersistentStorage {
           request.onsuccess = () => resolve({
             key,
             value: undefined,
+            time: undefined,
             ...request.result
           })
         })
