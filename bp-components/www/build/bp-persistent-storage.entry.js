@@ -1,4 +1,4 @@
-import { r as registerInstance } from './index-c8e98dd6.js';
+import { r as registerInstance } from './index-751d8972.js';
 
 const BpPersistentStorage = class {
   constructor(hostRef) {
