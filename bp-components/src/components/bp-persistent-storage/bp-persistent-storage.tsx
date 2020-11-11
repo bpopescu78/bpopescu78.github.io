@@ -12,12 +12,15 @@ export class BpPersistentStorage {
 
   @Method()
   async setKey(key: string, value: object): Promise<object> {
+    const timestamp = +new Date()
+
     return new Promise<object>((resolve, reject) => {
       this.getObjectStore(this.dbstorename, 'readwrite')
         .then(objectStore => {
           const request = objectStore.put({
             key,
-            value
+            value,
+            timestamp
           })
 
           request.onerror = error => {throw error}

@@ -9,12 +9,14 @@ const BpPersistentStorage = class {
     this.db = null;
   }
   async setKey(key, value) {
+    const timestamp = +new Date();
     return new Promise((resolve, reject) => {
       this.getObjectStore(this.dbstorename, 'readwrite')
         .then(objectStore => {
         const request = objectStore.put({
           key,
-          value
+          value,
+          timestamp
         });
         request.onerror = error => { throw error; };
         request.onsuccess = () => resolve({
