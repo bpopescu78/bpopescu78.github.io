@@ -12,10 +12,19 @@ export const config: Config = {
     },
     {
       type: 'docs-readme',
+      footer: '(c)2020 Bogdan Popescu'
     },
     {
       type: 'www',
       serviceWorker: null, // disable service workers
     },
   ],
-};
+  buildEs5: false,
+  extras: {
+    dynamicImportShim: false,
+    cssVarsShim: false,
+    shadowDomShim: false,
+    scriptDataOpts: false,
+    safari10: false
+  }
+}

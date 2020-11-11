@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property      | Attribute     | Description                   | Type     | Default                           |
-| ------------- | ------------- | ----------------------------- | -------- | --------------------------------- |
-| `dbname`      | `dbname`      | The IndexedDB's database name | `string` | `'bp-persistent-storage-default'` |
-| `dbstorename` | `dbstorename` | The database store name       | `string` | `'key-value-default'`             |
-| `dbversion`   | `dbversion`   | The database version          | `number` | `1`                               |
+| Property        | Attribute     | Description                   | Type     | Default                           |
+| --------------- | ------------- | ----------------------------- | -------- | --------------------------------- |
+| `DB_NAME`       | `dbname`      | The IndexedDB's database name | `string` | `'bp-persistent-storage-default'` |
+| `DB_STORE_NAME` | `dbstorename` | The database store name       | `string` | `'key-value-default'`             |
+| `DB_VERSION`    | `dbversion`   | The database version          | `number` | `1`                               |
 
 
 ## Methods
@@ -113,4 +113,4 @@ Type: `Promise<object>`
 
 ----------------------------------------------
 
-*Built with [StencilJS](https://stenciljs.com/)*
+(c)2020 Bogdan Popescu

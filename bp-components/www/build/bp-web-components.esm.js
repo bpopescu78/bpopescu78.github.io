@@ -1,1 +1,1 @@
-import{p as e,b as s}from"./p-d4a5553e.js";(()=>{const s=import.meta.url,t={};return""!==s&&(t.resourcesUrl=new URL(".",s).href),e(t)})().then((e=>s([["p-65e30267",[[0,"bp-persistent-storage",{dbname:[1],dbversion:[2],dbstorename:[1],setKey:[64],getKey:[64]}]]]],e)));
+import{p as e,b as s}from"./p-d4a5553e.js";(()=>{const s=import.meta.url,t={};return""!==s&&(t.resourcesUrl=new URL(".",s).href),e(t)})().then((e=>s([["p-143e0741",[[0,"bp-persistent-storage",{DB_NAME:[1,"dbname"],DB_VERSION:[2,"dbversion"],DB_STORE_NAME:[1,"dbstorename"],setKey:[64],getKey:[64]}]]]],e)));

@@ -9,17 +9,17 @@ export class BpPersistentStorage {
   /**
    * The IndexedDB's database name
    */
-  @Prop() dbname = 'bp-persistent-storage-default'
+  @Prop({ attribute: 'dbname' }) DB_NAME = 'bp-persistent-storage-default'
 
   /**
    * The database version
    */
-  @Prop() dbversion = 1
+  @Prop({ attribute: 'dbversion' }) DB_VERSION = 1
 
   /**
    * The database store name
    */
-  @Prop() dbstorename = 'key-value-default'
+  @Prop({ attribute: 'dbstorename' }) DB_STORE_NAME = 'key-value-default'
 
   /**
    * Writes the `key` - `value` pair in the database.
@@ -66,7 +66,7 @@ export class BpPersistentStorage {
     }
 
     return new Promise((resolve, reject) => {
-      this.getObjectStore(this.dbstorename, 'readwrite')
+      this.getObjectStore(this.DB_STORE_NAME, 'readwrite')
         .then(objectStore => {
 
           time.saved = +new Date()
@@ -141,7 +141,7 @@ export class BpPersistentStorage {
   @Method()
   async getKey(key: string): Promise<object> {
     return new Promise((resolve, reject) => {
-      this.getObjectStore(this.dbstorename, 'readonly')
+      this.getObjectStore(this.DB_STORE_NAME, 'readonly')
         .then(objectStore => {
           const request = objectStore.get(key)
           request.onerror = event => {throw event}
@@ -166,7 +166,7 @@ export class BpPersistentStorage {
         return resolve(this.db)
       }
 
-      const req = indexedDB.open(this.dbname, this.dbversion);
+      const req = indexedDB.open(this.DB_NAME, this.DB_VERSION);
       req.onsuccess = () => {
         this.db = req.result
         // console.log("openDb DONE", this.db)
@@ -182,7 +182,7 @@ export class BpPersistentStorage {
         // console.log("openDb.onupgradeneeded")
         const target: any = evt.currentTarget
         target.result.createObjectStore(
-          this.dbstorename, { keyPath: 'key', autoIncrement: false })
+          this.DB_STORE_NAME, { keyPath: 'key', autoIncrement: false })
       }
     })
   }
@@ -206,7 +206,7 @@ export class BpPersistentStorage {
 
   componentWillLoad() {
     this.openDb()
-      .catch(error => console.error(`openDb [${this.dbname}/${this.dbversion}/${this.dbstorename}]:`, error))
+      .catch(error => console.error(`openDb [${this.DB_NAME}/${this.DB_VERSION}/${this.DB_STORE_NAME}]:`, error))
   }
 
   render() {

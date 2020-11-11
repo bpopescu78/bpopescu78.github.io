@@ -10,15 +10,15 @@ export namespace Components {
         /**
           * The IndexedDB's database name
          */
-        "dbname": string;
+        "DB_NAME": string;
         /**
           * The database store name
          */
-        "dbstorename": string;
+        "DB_STORE_NAME": string;
         /**
           * The database version
          */
-        "dbversion": number;
+        "DB_VERSION": number;
         /**
           * Reads the `value` and `time` info for a given `key` from the database. If the `key` does not exist, `value` and `time` will be undefined.  ```ts getKey(key: string)    .then(resolveObject => ...)    .catch(rejectObject => ...) ``` * resolves with an Object    ```ts    resolveObject: {      key: string,      value: Object,      time: {        received: number,        saved: number      }    })    ```    where time holds the timestamps:    - when the `setKey` request was received    - when the `key` - `value` pair was saved in the database     If the `key` is _not_ found in the database, the `Promise` will still be resolved, but the Object will look like    ```ts    resolveObject: {      key: string,      value: undefined,      time: undefined    })    ``` * or rejects with an Object    ```ts    rejectObject: {      key: string,      error: Object    })    ```    The rejection reason can be displayed using    ```ts    console.error(rejectObject.error)    ```
          */
@@ -45,15 +45,15 @@ declare namespace LocalJSX {
         /**
           * The IndexedDB's database name
          */
-        "dbname"?: string;
+        "DB_NAME"?: string;
         /**
           * The database store name
          */
-        "dbstorename"?: string;
+        "DB_STORE_NAME"?: string;
         /**
           * The database version
          */
-        "dbversion"?: number;
+        "DB_VERSION"?: number;
     }
     interface IntrinsicElements {
         "bp-persistent-storage": BpPersistentStorage;

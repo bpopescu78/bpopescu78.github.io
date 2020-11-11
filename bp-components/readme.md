@@ -4,10 +4,22 @@
 
 This is a Web Component Library created using Stencil.
 
-<!-- Stencil is also great for building entire apps. For that, use the [stencil-app-starter](https://github.com/ionic-team/stencil-app-starter) instead. -->
+## Distribution Options
+
+### `Script tag`
+Use a script tag linked to a CDN copy of your published NPM module, for example:
+```html
+<script type="module" src="https://unpkg.com/bp-web-components@latest/dist/bp-web-components/bp-web-components.esm.js"></script>
+```
+The initial script itself is extremely tiny and does not represent the entire library, it's only a small registry.
+You can use any or all components within your library anywhere within that webpage.
+Doesn't matter if the actual component was written within the HTML, or created with vanilla JavaScript, jQuery, React, etc.
+Only the components used on that page will actually be requested and lazy-loaded.
+
+Replacing `bp-web-components@latest` with a nominal version is highly required, i.e. `bp-web-components@1.0.5`.
 
 # \<bp-persistent-storage />
 
 This component handles setting/getting key-value pairs to/from IndexedDB storage, together with timestamp information about the moment when they were saved.
 
-Click [here](./src/components/bp-persistent-storage/readme.md) for detailed info.
+Click [here](https://github.com/bpopescu78/bpopescu78.github.io/tree/main/bp-components/src/components/bp-persistent-storage/readme.md) for detailed info.
