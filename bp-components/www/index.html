@@ -1,4 +1,4 @@
-<!doctype html><html dir="ltr" lang="en"><head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"> <title>Stencil Component Starter</title> <link rel="modulepreload" href="/build/bp-web-components.esm.js"> <script type="module" src="/build/bp-web-components.esm.js" data-stencil></script> <script nomodule="" src="/build/bp-web-components.js" data-stencil></script> </head> <body> <!-- <my-component first="Stencil" last="'Don't call me a framework' JS"></my-component> --> <bp-persistent-storage> <script>
+<!doctype html><html dir="ltr" lang="en"><head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"> <title>Stencil Component Starter</title> <link rel="modulepreload" href="/build/bp-web-components.esm.js"> <script type="module" data-stencil data-resources-url="/build/" data-stencil-namespace="bp-web-components">import{p as e,b as s}from"/build/p-d4a5553e.js";(()=>{const s=import.meta.url,t={};return""!==s&&(t.resourcesUrl=new URL(".",s).href),e(t)})().then((e=>s([["p-65e30267",[[0,"bp-persistent-storage",{dbname:[1],dbversion:[2],dbstorename:[1],setKey:[64],getKey:[64]}]]]],e)));</script> <script nomodule="" src="/build/bp-web-components.js" data-stencil></script> </head> <body> <!-- <my-component first="Stencil" last="'Don't call me a framework' JS"></my-component> --> <bp-persistent-storage> <script>
       /**
        * Testing <bp-persistent-storage>
        */
@@ -23,13 +23,4 @@
         //   .catch(error => console.error(error))
         // }, 1000)
       })()
-    </script> </bp-persistent-storage><script>
-if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-  // auto-unregister service worker during dev mode
-  navigator.serviceWorker.getRegistration().then(function(registration) {
-  if (registration) {
-    registration.unregister().then(function() { location.reload(true) });
-  }
-  });
-}
-</script></body></html>
+    </script> </bp-persistent-storage></body></html>

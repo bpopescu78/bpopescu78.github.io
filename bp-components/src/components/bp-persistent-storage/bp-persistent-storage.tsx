@@ -6,10 +6,57 @@ import { Component, Method, Prop } from '@stencil/core'
 })
 export class BpPersistentStorage {
 
+  /**
+   * The IndexedDB's database name
+   */
   @Prop() dbname = 'bp-persistent-storage-default'
+
+  /**
+   * The database version
+   */
   @Prop() dbversion = 1
+
+  /**
+   * The database store name
+   */
   @Prop() dbstorename = 'key-value-default'
 
+  /**
+   * Writes the `key` - `value` pair in the database.
+   * If the `key` already exists in the database, the new `value` will overwrite the existing `value`.
+   *
+   * ```ts
+   * setKey(key: string, value: Object)
+   *   .then(resolveObject => ...)
+   *   .catch(rejectObject => ...)
+   * ```
+   * * resolves with an Object
+   *   ```ts
+   *   resolveObject: {
+   *     key: string,
+   *     value: Object,
+   *     time: {
+   *       received: number,
+   *       saved: number
+   *     }
+   *   })
+   *   ```
+   *   where time holds the timestamps:
+   *   - when the `setKey` request was received
+   *   - when the `key` - `value` pair was saved in the database
+   * * or rejects with an Object
+   *   ```ts
+   *   rejectObject: {
+   *     key: string,
+   *     value: Object,
+   *     error: Object
+   *   })
+   *   ```
+   *   The rejection reason can be displayed using
+   *   ```ts
+   *   console.error(rejectObject.error)
+   *   ```
+   */
   @Method()
   async setKey(key: string, value: object): Promise<object> {
     // set a time object related to the save process - when the data was received, when was it saved
@@ -18,7 +65,7 @@ export class BpPersistentStorage {
       saved: undefined
     }
 
-    return new Promise<object>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       this.getObjectStore(this.dbstorename, 'readwrite')
         .then(objectStore => {
 
@@ -47,9 +94,53 @@ export class BpPersistentStorage {
     })
   }
 
+  /**
+   * Reads the `value` and `time` info for a given `key` from the database.
+   * If the `key` does not exist, `value` and `time` will be undefined.
+   *
+   * ```ts
+   * getKey(key: string)
+   *   .then(resolveObject => ...)
+   *   .catch(rejectObject => ...)
+   * ```
+   * * resolves with an Object
+   *   ```ts
+   *   resolveObject: {
+   *     key: string,
+   *     value: Object,
+   *     time: {
+   *       received: number,
+   *       saved: number
+   *     }
+   *   })
+   *   ```
+   *   where time holds the timestamps:
+   *   - when the `setKey` request was received
+   *   - when the `key` - `value` pair was saved in the database
+   *
+   *   If the `key` is _not_ found in the database, the `Promise` will still be resolved, but the Object will look like
+   *   ```ts
+   *   resolveObject: {
+   *     key: string,
+   *     value: undefined,
+   *     time: undefined
+   *   })
+   *   ```
+   * * or rejects with an Object
+   *   ```ts
+   *   rejectObject: {
+   *     key: string,
+   *     error: Object
+   *   })
+   *   ```
+   *   The rejection reason can be displayed using
+   *   ```ts
+   *   console.error(rejectObject.error)
+   *   ```
+   */
   @Method()
   async getKey(key: string): Promise<object> {
-    return new Promise<object>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       this.getObjectStore(this.dbstorename, 'readonly')
         .then(objectStore => {
           const request = objectStore.get(key)
