@@ -1,6 +1,6 @@
 // configurable params
 const useCache = true
-const swCacheVersion = 44
+const swCacheVersion = 45
 const swCachePrefix = 'BP-demo-SW-'
 const urlMatch = '/sw-test/'
 
@@ -12,7 +12,7 @@ console.log('SW startup');
 
 /*
  * LIFECYCLE HOOKS
- * --------------- 
+ * ---------------
  */
 
 // INSTALL Event Handler
@@ -77,7 +77,7 @@ self.addEventListener('fetch', function(event) {
         if (response && response.status === 200 && response.type === 'basic' && response.url.match(urlMatch)) {
           // console.log(response)
           let responseClone = response.clone()
-      
+
           caches.open(swCacheName).then(function (cache) {
             cache.put(event.request, responseClone);
           });

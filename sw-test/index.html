@@ -9,12 +9,14 @@
     <title>Service worker demo</title>
 
     <link rel="stylesheet" href="style.css">
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+
+    <link rel="modulepreload" href="/bp-components/www/build/bp-components.esm.js">
+    <script type="module" src="/bp-components/www/build/bp-components.esm.js"></script>
+    <script nomodule src="/bp-components/www/build/bp-components.js"></script>
   </head>
 
   <body>
+
     <h1>Lego Star Wars gallery</h1>
 
     <section></section>
@@ -28,5 +30,33 @@
 
     <script src="image-list.js"></script>
     <script src="app.js"></script>
+
+    <bp-persistent-storage />
+    <script>
+      /**
+       * Testing <bp-persistent-storage>
+       */
+      (async () => {
+        await customElements.whenDefined('bp-persistent-storage')
+
+        const todoListElement = document.querySelector('bp-persistent-storage')
+        todoListElement.setKey('hi5', {
+            name: 'Bogdan'
+          })
+          .then(success => console.log(success))
+          .catch(error => console.error(error))
+
+
+        todoListElement.getKey('hi23')
+          .then(success => console.log('getKey', success))
+          .catch(error => console.error(error))
+
+        setTimeout(() => {
+          todoListElement.getKey('hi5')
+          .then(success => console.log('getKey', success))
+          .catch(error => console.error(error))
+        }, 1000)
+      })()
+    </script>
   </body>
 </html>
