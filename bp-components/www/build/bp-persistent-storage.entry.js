@@ -1,26 +1,22 @@
-import { Component, Method, Prop, h } from '@stencil/core'
+import { r as registerInstance, h } from './index-8ac4ad20.js';
 
-@Component({
-  tag: 'bp-persistent-storage',
-  shadow: false,
-})
-export class BpPersistentStorage {
-
-  /**
-   * The IndexedDB's database name
-   */
-  @Prop({ attribute: 'dbname' }) DB_NAME = 'bp-persistent-storage-default'
-
-  /**
-   * The database version
-   */
-  @Prop({ attribute: 'dbversion' }) DB_VERSION = 1
-
-  /**
-   * The database store name
-   */
-  @Prop({ attribute: 'dbstorename' }) DB_STORE_NAME = 'key-value-default'
-
+const BpPersistentStorage = class {
+  constructor(hostRef) {
+    registerInstance(this, hostRef);
+    /**
+     * The IndexedDB's database name
+     */
+    this.DB_NAME = 'bp-persistent-storage-default';
+    /**
+     * The database version
+     */
+    this.DB_VERSION = 1;
+    /**
+     * The database store name
+     */
+    this.DB_STORE_NAME = 'key-value-default';
+    this.db = null;
+  }
   /**
    * Writes the `key` - `value` pair in the database.
    *
@@ -58,43 +54,37 @@ export class BpPersistentStorage {
    *   console.error(rejectObject.error)
    *   ```
    */
-  @Method()
-  async setKey(key: string, value: object): Promise<object> {
+  async setKey(key, value) {
     // set a time object related to the save process - when the data was received, when was it saved
     const time = {
       received: +new Date(),
       saved: undefined
-    }
-
+    };
     return new Promise((resolve, reject) => {
       this.getObjectStore(this.DB_STORE_NAME, 'readwrite')
         .then(objectStore => {
-
-          time.saved = +new Date()
-
-          const request = objectStore.put({
-            key,
-            value,
-            time
-          })
-
-          request.onerror = error => {throw error}
-          request.onsuccess = () => resolve({
-            key,
-            value,
-            time
-          })
-        })
+        time.saved = +new Date();
+        const request = objectStore.put({
+          key,
+          value,
+          time
+        });
+        request.onerror = error => { throw error; };
+        request.onsuccess = () => resolve({
+          key,
+          value,
+          time
+        });
+      })
         .catch(error => {
-          reject({
-            key,
-            value,
-            error
-          })
-        })
-    })
+        reject({
+          key,
+          value,
+          error
+        });
+      });
+    });
   }
-
   /**
    * Reads the `value` and `time` info for a given `key` from the database.
    * If the `key` does not exist, `value` and `time` will be undefined.
@@ -139,79 +129,64 @@ export class BpPersistentStorage {
    *   console.error(rejectObject.error)
    *   ```
    */
-  @Method()
-  async getKey(key: string): Promise<object> {
+  async getKey(key) {
     return new Promise((resolve, reject) => {
       this.getObjectStore(this.DB_STORE_NAME, 'readonly')
         .then(objectStore => {
-          const request = objectStore.get(key)
-          request.onerror = event => {throw event}
-          request.onsuccess = () => resolve({
-            key,
-            value: undefined,
-            time: undefined,
-            ...request.result
-          })
-        })
+        const request = objectStore.get(key);
+        request.onerror = event => { throw event; };
+        request.onsuccess = () => resolve(Object.assign({ key, value: undefined, time: undefined }, request.result));
+      })
         .catch(error => reject({
-          key,
-          error
-        }))
-    })
+        key,
+        error
+      }));
+    });
   }
-
-  private db: IDBDatabase = null
-  private openDb() {
-    return new Promise((resolve: (value?: IDBDatabase) => void, reject: (reason: any) => void) => {
+  openDb() {
+    return new Promise((resolve, reject) => {
       if (this.db) {
-        return resolve(this.db)
+        return resolve(this.db);
       }
-
       const req = indexedDB.open(this.DB_NAME, this.DB_VERSION);
       req.onsuccess = () => {
-        this.db = req.result
+        this.db = req.result;
         // console.log("openDb DONE", this.db)
-        resolve(this.db)
-      }
-
+        resolve(this.db);
+      };
       req.onerror = (evt) => {
-        const target: any = evt.target
-        reject(target.errorCode)
-      }
-
+        const target = evt.target;
+        reject(target.errorCode);
+      };
       req.onupgradeneeded = (evt) => {
         // console.log("openDb.onupgradeneeded")
-        const target: any = evt.currentTarget
-        target.result.createObjectStore(
-          this.DB_STORE_NAME, { keyPath: 'key', autoIncrement: false })
-      }
-    })
+        const target = evt.currentTarget;
+        target.result.createObjectStore(this.DB_STORE_NAME, { keyPath: 'key', autoIncrement: false });
+      };
+    });
   }
-
   /**
    * @param {string} store_name
    * @param {string} mode either "readonly" ou "readwrite"
    */
-  private getObjectStore(store_name, mode) {
-    return new Promise((resolve: (value: IDBObjectStore) => void, reject: (reason: any) => void) =>
-      this.openDb()
-        .then(db => {
-          const tx = db.transaction(store_name, mode)
-          resolve(tx.objectStore(store_name))
-        })
-        .catch(error => {
-          reject(error)
-        })
-    )
+  getObjectStore(store_name, mode) {
+    return new Promise((resolve, reject) => this.openDb()
+      .then(db => {
+      const tx = db.transaction(store_name, mode);
+      resolve(tx.objectStore(store_name));
+    })
+      .catch(error => {
+      reject(error);
+    }));
   }
-
   componentWillLoad() {
     this.openDb()
-      .catch(error => console.error(`openDb [${this.DB_NAME}/${this.DB_VERSION}/${this.DB_STORE_NAME}]:`, error))
+      .catch(error => console.error(`openDb [${this.DB_NAME}/${this.DB_VERSION}/${this.DB_STORE_NAME}]:`, error));
   }
-
   render() {
     // only render the inner content
-    return <slot />
+    return h("slot", null);
   }
-}
+};
+
+export { BpPersistentStorage as bp_persistent_storage };

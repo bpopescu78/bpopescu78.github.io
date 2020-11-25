@@ -6,6 +6,24 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface BpMessageBroker {
+        /**
+          * Obtains the last element emitted in `queueName`.  Returns a `Promise` that always resolves to an `object` except if the queue does not exist or no value was emitted yet, in which case it resolves to `undefined`.
+         */
+        "getLastQueued": (queueName: string) => Promise<object>;
+        /**
+          * Publish content to `queueName`.  `content` can be of any type but if `content` is of type `Array`, its elements will be sent to the queue as distinct values. For example: ```ts publishToQueue('my-queue-name', [1, 4, 5]) ``` will emit 3 values on the `my-queue-name` in the array order: `1`, `3` and `5`.  If the actual data we want to emit as a single value is the array `[1, 4, 5]`, then it needs to be escaped inside an additional array: ```ts publishToQueue('my-queue-name', [[1, 4, 5]]) ```  It is a good practice to always send the value to be emitted inside an array in order to avoid checking the data types and to illustrate the intent of emitting one (single element array) or multiple values (multiple elements array): ```ts publishToQueue('my-queue-name', [{key: 345}]) publishToQueue('my-queue-name', [3]) publishToQueue('my-queue-name', ['Hello world!']) publishToQueue('my-queue-name', [[1, 4, 5]]) ```
+         */
+        "publishToQueue": (queueName: string, content: any) => Promise<Array<object>>;
+        /**
+          * Subscribes a `callBackFunction` to `queueName` of type `queueType`. Possible values for `queueType` are QUEUE_TYPE_OBSERVABLE = 'observable' and QUEUE_TYPE_FIFO = 'FIFO'. The default value is QUEUE_TYPE_OBSERVABLE.  If the queue does not exist, it is created.
+         */
+        "subscribeToQueue": (queueName: string, callBackFunction: (queueValue: object) => void, queueType?: string) => Promise<object>;
+        /**
+          * Unsubscribes from `queueName`.
+         */
+        "unsubscribeToQueue": (queueName: string, callBackFunction: (queueValue: object) => void) => Promise<boolean>;
+    }
     interface BpPersistentStorage {
         /**
           * The IndexedDB's database name
@@ -24,12 +42,18 @@ export namespace Components {
          */
         "getKey": (key: string) => Promise<object>;
         /**
-          * Writes the `key` - `value` pair in the database. If the `key` already exists in the database, the new `value` will overwrite the existing `value`.  ```ts setKey(key: string, value: Object)    .then(resolveObject => ...)    .catch(rejectObject => ...) ``` * resolves with an Object    ```ts    resolveObject: {      key: string,      value: Object,      time: {        received: number,        saved: number      }    })    ```    where time holds the timestamps:    - when the `setKey` request was received    - when the `key` - `value` pair was saved in the database * or rejects with an Object    ```ts    rejectObject: {      key: string,      value: Object,      error: Object    })    ```    The rejection reason can be displayed using    ```ts    console.error(rejectObject.error)    ```
+          * Writes the `key` - `value` pair in the database.  If the `key` already exists in the database, the new `value` will overwrite the existing `value`.  ```ts setKey(key: string, value: Object)    .then(resolveObject => ...)    .catch(rejectObject => ...) ``` * resolves with an Object    ```ts    resolveObject: {      key: string,      value: Object,      time: {        received: number,        saved: number      }    })    ```    where time holds the timestamps:    - when the `setKey` request was received    - when the `key` - `value` pair was saved in the database * or rejects with an Object    ```ts    rejectObject: {      key: string,      value: Object,      error: Object    })    ```    The rejection reason can be displayed using    ```ts    console.error(rejectObject.error)    ```
          */
         "setKey": (key: string, value: object) => Promise<object>;
     }
 }
 declare global {
+    interface HTMLBpMessageBrokerElement extends Components.BpMessageBroker, HTMLStencilElement {
+    }
+    var HTMLBpMessageBrokerElement: {
+        prototype: HTMLBpMessageBrokerElement;
+        new (): HTMLBpMessageBrokerElement;
+    };
     interface HTMLBpPersistentStorageElement extends Components.BpPersistentStorage, HTMLStencilElement {
     }
     var HTMLBpPersistentStorageElement: {
@@ -37,10 +61,13 @@ declare global {
         new (): HTMLBpPersistentStorageElement;
     };
     interface HTMLElementTagNameMap {
+        "bp-message-broker": HTMLBpMessageBrokerElement;
         "bp-persistent-storage": HTMLBpPersistentStorageElement;
     }
 }
 declare namespace LocalJSX {
+    interface BpMessageBroker {
+    }
     interface BpPersistentStorage {
         /**
           * The IndexedDB's database name
@@ -56,6 +83,7 @@ declare namespace LocalJSX {
         "DB_VERSION"?: number;
     }
     interface IntrinsicElements {
+        "bp-message-broker": BpMessageBroker;
         "bp-persistent-storage": BpPersistentStorage;
     }
 }
@@ -63,6 +91,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "bp-message-broker": LocalJSX.BpMessageBroker & JSXBase.HTMLAttributes<HTMLBpMessageBrokerElement>;
             "bp-persistent-storage": LocalJSX.BpPersistentStorage & JSXBase.HTMLAttributes<HTMLBpPersistentStorageElement>;
         }
     }

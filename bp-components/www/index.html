@@ -1,8 +1,9 @@
-<!doctype html><html dir="ltr" lang="en"><head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"> <title>Stencil Component Starter</title> <link rel="modulepreload" href="/build/bp-web-components.esm.js"> <script type="module" data-stencil data-resources-url="/build/" data-stencil-namespace="bp-web-components">import{p as e,b as s}from"/build/p-d4a5553e.js";(()=>{const s=import.meta.url,t={};return""!==s&&(t.resourcesUrl=new URL(".",s).href),e(t)})().then((e=>s([["p-143e0741",[[0,"bp-persistent-storage",{DB_NAME:[1,"dbname"],DB_VERSION:[2,"dbversion"],DB_STORE_NAME:[1,"dbstorename"],setKey:[64],getKey:[64]}]]]],e)));</script> <script nomodule="" src="/build/bp-web-components.js" data-stencil></script> </head> <body> <!-- <my-component first="Stencil" last="'Don't call me a framework' JS"></my-component> --> <bp-persistent-storage> <script>
-      /**
-       * Testing <bp-persistent-storage>
-       */
+<!doctype html><html dir="ltr" lang="en"><head> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"> <title>Stencil Component Starter</title> <link rel="modulepreload" href="/build/bp-web-components.esm.js"> <script type="module" src="/build/bp-web-components.esm.js" data-stencil></script> <script nomodule="" src="/build/bp-web-components.js" data-stencil></script> </head> <body> <!-- <my-component first="Stencil" last="'Don't call me a framework' JS"></my-component> --> <bp-persistent-storage></bp-persistent-storage> <bp-message-broker></bp-message-broker> <script>
       (async () => {
+        /**
+         * Testing <bp-persistent-storage>
+         */
+
         await customElements.whenDefined('bp-persistent-storage')
 
         const todoListElement = document.querySelector('bp-persistent-storage')
@@ -22,5 +23,52 @@
         //   .then(success => console.log('getKey', success))
         //   .catch(error => console.error(error))
         // }, 1000)
+
+        /**
+         * Testing <bp-message-broker>
+         */
+
+        await customElements.whenDefined('bp-message-broker')
+
+        const broker = document.querySelector('bp-message-broker')
+
+        setInterval(() => {
+          broker.publishToQueue('test1', [{
+            hello: 'world',
+            time: + new Date()
+          }])
+        }, 2000)
+
+        const callBack1 = (value) => {
+          console.log(`Published on "test1"`, value)
+        }
+        broker.subscribeToQueue('test1', callBack1)
+          .then((response) => {
+            console.log(`callBack1 subscribed successfully to queue "${response.queueName}"`)
+          })
+          .catch(err => console.error('callBack1 subscribed error', err))
+        setTimeout(() => {
+          broker.subscribeToQueue('test1', (value) => {
+            console.log(`Published also on "test1"`, value)
+          })
+          // }, 'FIFO')
+          .then((response) => {
+            console.log(`callBack2 subscribed successfully to queue "${response.queueName}"`)
+          })
+          .catch(err => console.error('callBack2 subscribed error', err))
+        }, 5000)
+        setTimeout(() => {
+          broker.unsubscribeToQueue('test1', callBack1)
+        }, 10000)
+
       })()
-    </script> </bp-persistent-storage></body></html>
+    </script> <script>
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  // auto-unregister service worker during dev mode
+  navigator.serviceWorker.getRegistration().then(function(registration) {
+  if (registration) {
+    registration.unregister().then(function() { location.reload(true) });
+  }
+  });
+}
+</script></body></html>

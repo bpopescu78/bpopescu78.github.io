@@ -70,6 +70,7 @@ Type: `Promise<object>`
 ### `setKey(key: string, value: object) => Promise<object>`
 
 Writes the `key` - `value` pair in the database.
+
 If the `key` already exists in the database, the new `value` will overwrite the existing `value`.
 
 ```ts
