@@ -1,12 +1,12 @@
 // configurable params
-const useCache = true
-const swCacheVersion = 51
+const useCache = false
+const swCacheVersion = 52
 const swCachePrefix = 'BP-demo-SW-'
 const urlMatch = '/sw-test/'
 
 // calculated params
 const swCacheName = `${swCachePrefix}${swCacheVersion}`
-
+''
 // ------------------------------------------------- //
 console.log('SW startup');
 

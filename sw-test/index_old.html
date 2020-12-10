@@ -8,7 +8,7 @@
 
     <title>Service worker demo</title>
 
-    <link rel="stylesheet" href="mystyle.css">
+    <link rel="stylesheet" href="style.css">
 
     <!-- <link rel="modulepreload" href="/bp-components/www/build/bp-web-components.esm.js">
     <script type="module" src="/bp-components/www/build/bp-web-components.esm.js"></script>
@@ -25,32 +25,9 @@
 
   <body>
 
-    <h1>PULSE Offline Demo</h1>
+    <h1>Lego Star Wars gallery</h1>
 
-    <section>
-      <img src="./gallery/pic_00.jpg" alt="">
-      <p>In a world where everything moves faster and faster</p>
-    </section>
-
-    <section>
-      <img src="./gallery/pic_01.jpg" alt="">
-      <p>Keeping the infrastructure in good shape is essential</p>
-    </section>
-
-    <section>
-      <img src="./gallery/pic_02.jpg" alt="">
-      <p>There are many components in a railway system and all of them must be supervised and properly maintained</p>
-    </section>
-
-    <section>
-      <img src="./gallery/pic_03.jpg" alt="">
-      <p>PULSE is the tool that assists the maintenance personnel in their daily activities</p>
-    </section>
-
-    <section>
-      <img src="./gallery/pic_04.jpg" alt="">
-      <p>Its Offline Mode is great for areas without coverage or in order to provide fast access to maintenance documents, schematics and assistence</p>
-    </section>
+    <section></section>
 
     <!-- This section is relevant for SW implementation -->
     <div id="swupdate">A service worker update is <span id="swupdate-status"></span>.
@@ -59,8 +36,8 @@
     <script src="sw-handler.js"></script>
     <!-- End -->
 
-    <!-- <script src="image-list.js"></script> -->
-    <!-- <script src="app.js"></script> -->
+    <script src="image-list.js"></script>
+    <script src="app.js"></script>
 
     <bp-persistent-storage />
     <script>
