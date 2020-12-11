@@ -10,6 +10,8 @@ h1 {
   /* height: 197px; */
   text-align: center;
   font-size: 4rem;
+  color: white;
+  background-color: mediumpurple;
 }
 
 body {

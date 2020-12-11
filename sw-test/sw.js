@@ -1,6 +1,6 @@
 // configurable params
 const useCache = true
-const swCacheVersion = 55
+const swCacheVersion = 56
 const swCachePrefix = 'BP-demo-SW-'
 const urlMatch = '/sw-test/'
 
